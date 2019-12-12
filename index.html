@@ -8,96 +8,68 @@
 		
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 		<style class="cp-pen-styles">
-				  body {
-		  padding-top: 80px;
-		}
+				  .press {
+					display: block;  /* Remove bullet points; allow greater control of positioning */
+					padding: 0;      /* Override defaults for lists */
+					margin: 0;       /* Override defaults for lists */
+					width: 100%;     /* Get the row full width */
+				}
 
-		.show-cart li {
-		  display: flex;
-		}
-		.card {
-		  margin-bottom: 20px;
-		}
-		.card-img-top {
-		  width: 200px;
-		  height: 200px;
-		  align-self: center;
-		}
+				.press li {
+					display: inline-block; /* Get all images to show in a row */
+					width: 25%;            /* Show 4 logos per row */
+					text-align: center;    /* Centre align the images */
+				}
+
+				@media (max-width: 960px) and (min-width: 501px) {
+					.press li { width: 30%; } /* Show 2 logos per row on medium devices (tablets, phones in landscape) */
+				}
+
+				@media (max-width: 500px) {
+					.press li { width: 90%; } /* On small screens, show one logo per row */
+				}
 				</style>
 	</head>
-	<body>
+	<body onload="loadMenu()">
 
 		<nav class="navbar navbar-inverse bg-inverse fixed-top bg-faded">
 		<div class="row">
 		
 		</nav>
+		
+		<div class='center' style = "margin-top:3%; margin-bottom:5%">
+				<ul id="main" class="press">
+				  
+				</ul>
+		</div>
 
-		<div class="container">
-		<div class="row">
-			<div class="col">
-				<div class="card" style="width: 20rem;">
-					<img class="card-img-top" src="logo.jpg" alt="Card image cap">
-					<div class="card-block">
-						<h4 class="card-title">Bò Sốt BBQ</h4>
-						<p >Size S: 65K / Size L: 100K</p>
-					</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="card" style="width: 20rem;">
-					<img class="card-img-top" src="logo.jpg" alt="Card image cap">
-					<div class="card-block">
-						<h4 class="card-title">Bò Sốt Tiêu Đen</h4>
-						<p >Size S: 65K / Size L: 100K</p>
-					</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="card" style="width: 20rem;">
-					<img class="card-img-top" src="logo.jpg" alt="Card image cap">
-					<div class="card-block">
-						<h4 class="card-title">Bò Sốt Phô Mai</h4>
-						<p >Size S: 65K / Size L: 100K</p>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col">
-				<div class="card" style="width: 20rem;">
-					<img class="card-img-top" src="logo.jpg" alt="Card image cap">
-					<div class="card-block">
-						<h4 class="card-title">Bò Sốt Chua Cay</h4>
-						<p >Size S: 65K / Size L: 100K</p>
-					</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="card" style="width: 20rem;">
-					<img class="card-img-top" src="logo.jpg" alt="Card image cap">
-					<div class="card-block">
-						<h4 class="card-title">Bò Sốt Rượu</h4>
-						<p >Size S: 65K / Size L: 100K</p>
-					</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="card" style="width: 20rem;">
-					<img class="card-img-top" src="logo.jpg" alt="Card image cap">
-					<div class="card-block">
-						<h4 class="card-title">Bò Sốt Nấm</h4>
-						<p >Size S: 65K / Size L: 100K</p>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div id="container">
+		
 		</div>
 
 		
 		<script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-de7e2ef6bfefd24b79a3f68b414b87b8db5b08439cac3f1012092b2290c719cd.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 		<script id="rendered-js">
-		
-				</script>
+			function loadMenu() {
+			  fetch("menu.json")
+			  .then(response => response.json())
+			  .then(json => {
+				var mainList = document.getElementById("main");
+				console.log(json['menus'][0]['name']);
+				json['menus'].forEach(function(item, index) {
+					var elem = document.createElement("li");
+					var s = "<div class='press-logo'><img src='logo.jpg' alt='Card image cap'></div><h4 class='card-title'>"+item['name']+"</h4><p>Size S: "+item['sizes'][0]['priceCode']+"K";
+					if(item['sizes'].length>1){
+						s+=" / Size L: "+item['sizes'][1]['priceCode']+"K"
+					}
+					s+="</p>";
+					elem.innerHTML=s;
+					mainList.appendChild(elem);
+				});
+			  });
+			  
+			}
+		</script>
 
 
 	</body>
